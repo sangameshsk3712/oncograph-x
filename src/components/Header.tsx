@@ -1,4 +1,4 @@
-import { Dna, Brain, Network, Activity, BarChart3, Binary, Download, Award, Sparkles, Lock } from 'lucide-react';
+import { Dna, Brain, Network, Activity, BarChart3, Binary, Download, Award, Sparkles, Lock, Github } from 'lucide-react';
 import { PatientCase } from '../types/oncology';
 
 export type ActiveTab = 
@@ -19,6 +19,7 @@ interface HeaderProps {
   setSelectedPatientId: (id: string) => void;
   patientCases: PatientCase[];
   onOpenVerification?: () => void;
+  onOpenGitHubPublish?: () => void;
 }
 
 export const Header = ({
@@ -28,6 +29,7 @@ export const Header = ({
   setSelectedPatientId,
   patientCases,
   onOpenVerification,
+  onOpenGitHubPublish,
 }: HeaderProps) => {
   const navItems = [
     { id: 'workstation', label: 'Patient Case', icon: Brain },
@@ -94,6 +96,16 @@ export const Header = ({
             >
               <span>Blueprint Checklist</span>
               <span className="bg-emerald-500 text-slate-950 px-1 rounded text-[10px] font-bold">100%</span>
+            </button>
+          )}
+
+          {onOpenGitHubPublish && (
+            <button
+              onClick={onOpenGitHubPublish}
+              className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
+            >
+              <Github className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Publish to GitHub</span>
             </button>
           )}
         </div>

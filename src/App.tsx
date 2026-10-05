@@ -17,12 +17,14 @@ import { FederatedNodeView } from './components/FederatedNodeView';
 import { ColabExporter } from './components/ColabExporter';
 import { ISEFDeck } from './components/ISEFDeck';
 import { BlueprintVerificationModal } from './components/BlueprintVerificationModal';
+import { GitHubPublishModal } from './components/GitHubPublishModal';
 
 export default function App() {
   const [patientCases, setPatientCases] = useState<PatientCase[]>(PATIENT_CASES);
   const [selectedPatientId, setSelectedPatientId] = useState<string>(PATIENT_CASES[0].id);
   const [activeTab, setActiveTab] = useState<ActiveTab>('workstation');
   const [isVerificationOpen, setIsVerificationOpen] = useState<boolean>(false);
+  const [isGitHubOpen, setIsGitHubOpen] = useState<boolean>(false);
 
   const selectedPatient = patientCases.find((p) => p.id === selectedPatientId) || patientCases[0];
 
@@ -42,6 +44,7 @@ export default function App() {
         setSelectedPatientId={setSelectedPatientId}
         patientCases={patientCases}
         onOpenVerification={() => setIsVerificationOpen(true)}
+        onOpenGitHubPublish={() => setIsGitHubOpen(true)}
       />
 
       {/* Blueprint Verification Modal */}
@@ -49,6 +52,12 @@ export default function App() {
         isOpen={isVerificationOpen}
         onClose={() => setIsVerificationOpen(false)}
         setActiveTab={setActiveTab}
+      />
+
+      {/* GitHub 1-Click Publishing Modal */}
+      <GitHubPublishModal
+        isOpen={isGitHubOpen}
+        onClose={() => setIsGitHubOpen(false)}
       />
 
       {/* Main Scientific Canvas */}

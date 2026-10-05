@@ -315,6 +315,58 @@ Include exactly 3 high-impact clinical trial citations. Valid JSON only without 
   }
 });
 
+// Endpoint: Download Complete Git Bundle
+app.get('/api/download-bundle', (_req, res) => {
+  const bundlePath = path.resolve(__dirname, 'oncograph-x.bundle');
+  res.download(bundlePath, 'oncograph-x.bundle', (err) => {
+    if (err) {
+      console.error('Error serving bundle:', err);
+      res.status(500).json({ error: 'Failed to download git bundle' });
+    }
+  });
+});
+
+// Endpoint: Automated GitHub Push with User's Token
+app.post('/api/github-push', async (req, res) => {
+  try {
+    const { token, repoOwner = 'sangameshsk3712', repoName = 'oncograph-x' } = req.body;
+
+    if (!token || typeof token !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'GitHub Personal Access Token is required to authenticate push.',
+      });
+    }
+
+    const sanitizedToken = token.trim();
+    const remoteUrl = `https://${sanitizedToken}@github.com/${repoOwner}/${repoName}.git`;
+
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+
+    // Update remote and push
+    await execAsync('git remote remove origin 2>/dev/null || true');
+    await execAsync(`git remote add origin ${remoteUrl}`);
+    const { stdout, stderr } = await execAsync('git push -u origin main --force');
+
+    console.log('GitHub Push Output:', stdout, stderr);
+
+    return res.json({
+      success: true,
+      repoUrl: `https://github.com/${repoOwner}/${repoName}`,
+      message: `Successfully pushed all 27 OncoGraph-X files to https://github.com/${repoOwner}/${repoName}`,
+      details: stdout || stderr,
+    });
+  } catch (error: any) {
+    console.error('Error pushing to GitHub:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to push to GitHub. Please verify your token permissions (needs repo scope).',
+    });
+  }
+});
+
 // Vite middleware or static serving
 async function setupServer() {
   const isProd = process.env.NODE_ENV === 'production';
