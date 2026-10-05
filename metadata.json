@@ -1,0 +1,7 @@
+{
+  "name": "OncoGraph-X: Multi-Modal AI for Tumor Mutation & Resistance Tracking",
+  "description": "Novel multi-modal Graph Neural Network and Cross-Attention Transformer architecture combining genomic sequence data and 3D MRI/CT imaging to predict aggressive cancer mutation trajectories and drug resistance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
