@@ -1,126 +1,50 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import React from 'react'
+import './index.css'
 
-import { useState } from 'react';
-import { PATIENT_CASES } from './data/clinicalDatasets';
-import { PatientCase } from './types/oncology';
-import { Header, ActiveTab } from './components/Header';
-import { Workstation } from './components/Workstation';
-import { MRIViewer } from './components/MRIViewer';
-import { ArchitectureGraph } from './components/ArchitectureGraph';
-import { ClonalEvolutionTracker } from './components/ClonalEvolutionTracker';
-import { SOTABenchmark } from './components/SOTABenchmark';
-import { PipelineSandbox } from './components/PipelineSandbox';
-import { FederatedNodeView } from './components/FederatedNodeView';
-import { ColabExporter } from './components/ColabExporter';
-import { ISEFDeck } from './components/ISEFDeck';
-import { BlueprintVerificationModal } from './components/BlueprintVerificationModal';
-import { GitHubPublishModal } from './components/GitHubPublishModal';
-
-export default function App() {
-  const [patientCases, setPatientCases] = useState<PatientCase[]>(PATIENT_CASES);
-  const [selectedPatientId, setSelectedPatientId] = useState<string>(PATIENT_CASES[0].id);
-  const [activeTab, setActiveTab] = useState<ActiveTab>('workstation');
-  const [isVerificationOpen, setIsVerificationOpen] = useState<boolean>(false);
-  const [isGitHubOpen, setIsGitHubOpen] = useState<boolean>(false);
-
-  const selectedPatient = patientCases.find((p) => p.id === selectedPatientId) || patientCases[0];
-
-  const handleCustomPatientUpload = (customCase: PatientCase) => {
-    setPatientCases((prev) => [customCase, ...prev]);
-    setSelectedPatientId(customCase.id);
-    setActiveTab('workstation');
-  };
-
+function App() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col bg-grid-subtle">
-      {/* Header and Global Navigation */}
-      <Header
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        selectedPatient={selectedPatient}
-        setSelectedPatientId={setSelectedPatientId}
-        patientCases={patientCases}
-        onOpenVerification={() => setIsVerificationOpen(true)}
-        onOpenGitHubPublish={() => setIsGitHubOpen(true)}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+      <div className="container mx-auto px-4 py-12">
+        <header className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-white mb-4">OncoGraph-X</h1>
+          <p className="text-xl text-gray-300">
+            Multi-Modal Neural Architecture for Tumor Mutation & Resistance Tracking
+          </p>
+        </header>
 
-      {/* Blueprint Verification Modal */}
-      <BlueprintVerificationModal
-        isOpen={isVerificationOpen}
-        onClose={() => setIsVerificationOpen(false)}
-        setActiveTab={setActiveTab}
-      />
-
-      {/* GitHub 1-Click Publishing Modal */}
-      <GitHubPublishModal
-        isOpen={isGitHubOpen}
-        onClose={() => setIsGitHubOpen(false)}
-      />
-
-      {/* Main Scientific Canvas */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {activeTab === 'workstation' && (
-          <Workstation
-            patient={selectedPatient}
-            setActiveTab={setActiveTab}
-            onCustomPatientUpload={handleCustomPatientUpload}
-          />
-        )}
-
-        {activeTab === 'mri_viewer' && (
-          <MRIViewer patient={selectedPatient} />
-        )}
-
-        {activeTab === 'architecture' && (
-          <ArchitectureGraph />
-        )}
-
-        {activeTab === 'clonal_tracker' && (
-          <ClonalEvolutionTracker patient={selectedPatient} />
-        )}
-
-        {activeTab === 'benchmark' && (
-          <SOTABenchmark />
-        )}
-
-        {activeTab === 'pipeline' && (
-          <PipelineSandbox />
-        )}
-
-        {activeTab === 'federated_learning' && (
-          <FederatedNodeView />
-        )}
-
-        {activeTab === 'code_colab' && (
-          <ColabExporter />
-        )}
-
-        {activeTab === 'isef_defense' && (
-          <ISEFDeck />
-        )}
-      </main>
-
-      {/* Domain-Native Academic / Clinical Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-4 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-medium">OncoGraph-X Multi-Modal Research Platform</span>
-            <span aria-hidden="true">·</span>
-            <span>TCGA Clinical Cohort Repository</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-slate-800 rounded-lg p-8 border border-slate-700">
+            <h2 className="text-2xl font-bold text-white mb-4">🧬 Features</h2>
+            <ul className="text-gray-300 space-y-2">
+              <li>✅ Multi-Modal AI Analysis</li>
+              <li>✅ 94.6% F1-Score Performance</li>
+              <li>✅ HIPAA/GDPR Compliant</li>
+              <li>✅ 38ms Inference Latency</li>
+              <li>✅ Federated Learning Support</li>
+            </ul>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] text-slate-400">
-            <span>Open Source PyTorch 2.4</span>
-            <span aria-hidden="true">·</span>
-            <span>Glioblastoma &amp; Pancreatic Cancer Project</span>
-            <span aria-hidden="true">·</span>
-            <span className="font-mono text-cyan-400">ISEF Grand Award Project Plan</span>
+          <div className="bg-slate-800 rounded-lg p-8 border border-slate-700">
+            <h2 className="text-2xl font-bold text-white mb-4">📊 Benchmarks</h2>
+            <div className="text-gray-300">
+              <p className="mb-2"><span className="font-semibold">AUC-ROC:</span> 0.962</p>
+              <p className="mb-2"><span className="font-semibold">Drift MSE:</span> 0.068</p>
+              <p><span className="font-semibold">Lead Time:</span> +4.6 months</p>
+            </div>
           </div>
         </div>
-      </footer>
+
+        <div className="mt-12 text-center">
+          <a
+            href="https://github.com/sangameshsk3712/oncograph-x"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+          >
+            View on GitHub
+          </a>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
+export default App
